@@ -2,18 +2,30 @@
 
 function Thermostat(){
   this.MININUM_TEMPERATURE = 10;
+  this.MAX_LIMIT_PSM_ON = 25;
+  this.MAX_LIMIT_PSM_OFF = 32;
   this.temperature = 20;
   this.powerSavingMode = true;
 };
 
-var thermostat = new Thermostat();
+// var thermostat = new Thermostat();
 
 Thermostat.prototype.getCurrentTemperature = function(){
   return this.temperature;
 };
 
 Thermostat.prototype.up = function(){
-  return this.temperature += 1;
+  if (this.isMaximumTemperature()) {
+    return;
+  }
+  this.temperature += 1;
+};
+
+Thermostat.prototype.isMaximumTemperature = function(){
+  if (this.isPowerSavingModeOn()) {
+    return this.temperature === this.MAX_LIMIT_PSM_ON;
+  };
+  return this.temperature === this.MAX_LIMIT_PSM_OFF;
 };
 
 Thermostat.prototype.down = function(){
